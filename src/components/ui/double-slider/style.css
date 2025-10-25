@@ -1,0 +1,9 @@
+/* input[type="range"]::-webkit-slider-thumb {
+	height: 30px;
+	width: 30px;
+	border-radius: 100%;
+	background-color: #ffffff;
+	appearance: none;
+	pointer-events: auto;
+	cursor: pointer;
+} */

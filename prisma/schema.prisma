@@ -1,0 +1,410 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+  // output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis]
+}
+
+enum ListingStatus {
+  Draft
+  Published
+  Archived
+}
+
+enum PrivacyType {
+  EntirePlace
+  Room
+  SharedRoom
+}
+
+enum Highlight {
+  HighSpeedInternetAccess
+  WasherDryer
+  AirConditioning
+  Heating
+  SmokeFree
+  CableReady
+  SatelliteTV
+  DoubleVanities
+  TubShower
+  Intercom
+  SprinklerSystem
+  RecentlyRenovated
+  CloseToTransit
+  GreatView
+  QuietNeighborhood
+}
+
+enum Amenity {
+  wifi
+  tv
+  kitchen
+  washer
+  freeParkingOnPremises
+  paidParkingOnPremises
+  airConditioning
+  dedicatedWorkspace
+  pool
+  hotTub
+  outdoorDiningArea
+  firePit
+  poolTable
+  indoorFireplace
+  piano
+  exerciseEquipment
+  lakeAccess
+  beachAccess
+  outdoorShower
+  smokeAlarm
+  firstAidKit
+  fireExtinguisher
+  carbonMonoxideAlarm
+}
+
+enum PropertyType {
+  House
+  Hotel
+  GuestHouse
+  Apartment
+  EarthHome
+  BedAndBreakfast
+  Dome
+}
+
+enum OccupancyType {
+  Me
+  Roommates
+  Family
+  OtherGuests
+}
+
+enum ApplicationStatus {
+  Pending
+  Denied
+  Approved
+}
+
+enum BookingStatus {
+  Pending
+  Confirmed
+  Declined
+  Canceled
+  Completed
+}
+
+enum PaymentStatus {
+  Pending
+  Paid
+  PartiallyPaid
+  Overdue
+}
+
+enum ManagerStatus {
+  Active
+  Suspended
+  Banned
+}
+
+enum PricingType {
+  DAY
+  WEEK
+  MONTH
+  YEAR
+}
+
+enum BookingType {
+  REQUEST // Guests must ask if they can book
+  INSTANT // Guests can book automatically
+}
+
+model User {
+  id              String   @id @default(cuid())
+  externalId      String   @unique
+  email           String?  @unique
+  firstName       String
+  lastName        String
+  phoneNumber     String?
+  profilePhotoUrl String?
+  isVerified      Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  isHost          Boolean  @default(false)
+  host            Host?    @relation("UserHost")
+
+  wishlists Wishlist[]
+  viewed    RecentlyViewed[]
+}
+
+model Host {
+  id              String        @id @default(cuid())
+  userId          String        @unique
+  bio             String?
+  isVerified      Boolean       @default(false)
+  rating          Float?        @default(0)
+  numberOfReviews Int?          @default(0)
+  joinedAt        DateTime      @default(now())
+  status          ManagerStatus @default(Active)
+
+  user     User      @relation("UserHost", fields: [userId], references: [id], onDelete: Cascade)
+  listings Listing[]
+}
+
+model Listing {
+  id              String          @id @default(cuid())
+  title           String?
+  description     String?
+  price           Float?
+  pricingType     PricingType     @default(DAY)
+  securityDeposit Float?
+  applicationFee  Float?
+  photos          Photo[]
+  amenities       Amenity[]       @default([])
+  highlights      Highlight[]     @default([])
+  occupancy       OccupancyType[] @default([])
+
+  isPetsAllowed     Boolean @default(false)
+  isParkingIncluded Boolean @default(false)
+
+  baths        Float?
+  squareFeet   Int?
+  propertyType PropertyType?
+  privacyType  PrivacyType?
+
+  guests   Int @default(1)
+  bedrooms Int @default(0)
+  beds     Int @default(0)
+
+  postedDate      DateTime @default(now())
+  averageRating   Float?   @default(0)
+  numberOfReviews Int?     @default(0)
+
+  locationId String?
+  hostId     String // stays required
+
+  status      ListingStatus    @default(Draft)
+  wishlists   WishlistItem[]
+  viewedBy    RecentlyViewed[]
+  bookingType BookingType?
+
+  currentStep String?
+
+  location Location? @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  host     Host      @relation(fields: [hostId], references: [id], onDelete: Cascade)
+
+  ContactInfo ContactInfo[]
+}
+
+model Location {
+  id          String                                 @id @default(cuid())
+  address     String
+  city        String
+  state       String
+  country     String
+  postalCode  String
+  coordinates Unsupported("geography(Point, 4326)")?
+
+  listings Listing[]
+}
+
+model Photo {
+  id        String   @id @default(cuid())
+  listingId String
+  key       String // S3 object key
+  url       String // publicly-accessible URL (or CloudFront URL)
+  isCover   Boolean  @default(false)
+  position  Int      @default(0) // for ordering
+  createdAt DateTime @default(now())
+
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([listingId])
+}
+
+model Wishlist {
+  id        String         @id @default(cuid())
+  name      String
+  userId    String
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     WishlistItem[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@unique([userId, name])
+}
+
+model WishlistItem {
+  id         String   @id @default(cuid())
+  wishlistId String
+  listingId  String
+  wishlist   Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
+  listing    Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  note      String? // optional user note about this listing
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([wishlistId, listingId])
+}
+
+model RecentlyViewed {
+  id        String   @id @default(cuid())
+  userId    String
+  listingId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  viewedAt  DateTime @default(now())
+
+  @@unique([userId, listingId])
+  @@index([userId, viewedAt(sort: Desc)])
+}
+
+model Category {
+  id    String       @id @default(cuid())
+  name  String
+  value PropertyType
+  image String
+}
+
+model ContactInfo {
+  id        String  @id @default(cuid())
+  listingId String  @unique
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  fullName       String
+  email          String
+  phone          String
+  alternatePhone String? // optional
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// model Property {
+//   id                String          @id @default(uuid())
+//   name              String
+//   description       String
+//   pricePerMonth     Float
+//   securityDeposit   Float
+//   applicationFee    Float
+//   photoUrls         String[]
+//   amenities         Amenity[]
+//   highlights        Highlight[]
+//   isPetsAllowed     Boolean      @default(false)
+//   isParkingIncluded Boolean      @default(false)
+//   beds              Int
+//   baths             Float
+//   squareFeet        Int
+//   propertyType      PropertyType
+//   postedDate        DateTime     @default(now())
+//   averageRating     Float?       @default(0)
+//   numberOfReviews   Int?         @default(0)
+//   locationId        String
+//   managerCognitoId  String
+//   createdAt        DateTime     @default(now()) @map("created_at")
+//   updatedAt        DateTime     @updatedAt @map("updated_at")
+
+//   location     Location      @relation(fields: [locationId], references: [id])
+//   manager      Manager       @relation(fields: [managerCognitoId], references: [cognitoId])
+//   leases       Lease[]
+//   applications Application[]
+//   favoritedBy  Tenant[]      @relation("TenantFavorites")
+//   tenants      Tenant[]      @relation("TenantProperties")
+// }
+
+// model Manager {
+//   id          String    @id @default(uuid())
+//   cognitoId   String @unique
+//   bio             String?
+//   profilePhotoUrl String?
+//   companyName     String?
+//   isVerified      Boolean  @default(false)
+//   rating          Float?   @default(0)
+//   numberOfReviews Int?     @default(0)
+//   joinedAt        DateTime @default(now())
+//   status          ManagerStatus @default(Active)
+
+//   tenant          Tenant?
+//   managedProperties Property[]
+// }
+
+// model Tenant {
+//   id          String    @id @default(uuid())
+//   cognitoId   String @unique
+//   name        String
+//   email       String
+//   phoneNumber String
+
+//   properties   Property[]    @relation("TenantProperties")
+//   favorites    Property[]    @relation("TenantFavorites")
+//   applications Application[]
+//   leases       Lease[]
+//   payments     Payment[] 
+
+//   manager        Manager?      @relation(fields: [managerId], references: [id])
+//   managerId      String?       @unique
+// }
+
+// model Location {
+//   id          String                                   @id @default(uuid())
+//   address     String
+//   city        String
+//   state       String
+//   country     String
+//   postalCode  String
+//   coordinates Unsupported("geography(Point, 4326)")
+
+//   properties Property[]
+// }
+
+// model Application {
+//   id              String               @id @default(uuid())
+//   applicationDate DateTime
+//   status          ApplicationStatus
+//   propertyId      String
+//   tenantCognitoId String
+//   name            String
+//   email           String
+//   phoneNumber     String
+//   message         String?
+//   leaseId         String?              @unique
+
+//   property Property @relation(fields: [propertyId], references: [id])
+//   tenant   Tenant   @relation(fields: [tenantCognitoId], references: [cognitoId])
+//   lease    Lease?   @relation(fields: [leaseId], references: [id])
+
+//   @@unique([tenantCognitoId, propertyId])
+// }
+
+// model Lease {
+//   id              String      @id @default(uuid())
+//   startDate       DateTime
+//   endDate         DateTime
+//   rent            Float
+//   deposit         Float
+//   propertyId      String
+//   tenantCognitoId String
+
+//   property    Property     @relation(fields: [propertyId], references: [id])
+//   tenant      Tenant       @relation(fields: [tenantCognitoId], references: [cognitoId])
+//   application Application?
+//   payments    Payment[]
+// }
+
+// model Payment {
+//   id            Int           @id @default(autoincrement())
+//   amountDue     Float
+//   amountPaid    Float
+//   dueDate       DateTime
+//   paymentDate   DateTime
+//   paymentStatus PaymentStatus
+//   leaseId       String
+//   tenantCognitoId String
+//   tenant        Tenant        @relation(fields: [tenantCognitoId], references: [cognitoId])
+
+//   lease Lease @relation(fields: [leaseId], references: [id])
+// }

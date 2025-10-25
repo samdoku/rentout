@@ -1,0 +1,380 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+	font-family: Circular;
+	unicode-range: U+0000-03FF, U+0500-058F, U+0700-074F, U+0780-FAFF, U+FE00-FE6F, U+FF00-EFFFF, U+FFFFE-10FFFF;
+	font-weight: normal;
+	font-style: normal;
+	src: url("./fonts/Airbnb_Cereal-Book-9a1c9cca9bb3d65fefa2aa487617805e.woff2") format("woff2"),
+		url("./fonts/Airbnb_Cereal-Book-aa38e86e3f98554f9f7053d7b713b4db.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	unicode-range: U+0000-03FF, U+0500-058F, U+0700-074F, U+0780-FAFF, U+FE00-FE6F, U+FF00-EFFFF, U+FFFFE-10FFFF;
+	font-weight: 600;
+	font-style: normal;
+	src: url("./fonts/Airbnb_Cereal-Medium-50fc004b3082375f12ff0cfb67bf8e56.woff2") format("woff2"),
+		url("./fonts/Airbnb_Cereal-Medium-4bc8dafd2e0fd8914bf4d5edce9acd24.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	unicode-range: U+0000-03FF, U+0500-058F, U+0700-074F, U+0780-FAFF, U+FE00-FE6F, U+FF00-EFFFF, U+FFFFE-10FFFF;
+	font-weight: 800;
+	font-style: normal;
+	src: url("./fonts/Airbnb_Cereal-Bold-bdfb98485e7836ba31b456f65cded088.woff2") format("woff2"),
+		url("./fonts/Airbnb_Cereal-Bold-a188841af78481a25b7bb2316a5f5716.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	unicode-range: U+0400-04FF;
+	font-weight: normal;
+	font-style: normal;
+	src: url("./fonts/Airbnb_Cereal-Cyrillic-Book-e02d5d2c18cb1adb5f60fba73ec84b85.woff2") format("woff2"),
+		url("./fonts/Airbnb_Cereal-Cyrillic-Book-c2fc5b3551254c57abcddb6ae3846011.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	unicode-range: U+0400-04FF;
+	font-weight: 600;
+	font-style: normal;
+	src: url("./fonts/Airbnb_Cereal-Cyrillic-Medium-f0e661ba5740e054d7c1faad5984c994.woff2") format("woff2"),
+		url("./fonts/Airbnb_Cereal-Cyrillic-Medium-4e2e45a7189b6b9cf46bb33f5fe04c09.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	unicode-range: U+0400-04FF;
+	font-weight: 800;
+	font-style: normal;
+	src: url("./fonts/Airbnb_Cereal-Cyrillic-Bold-b218e811576428a4ca3d2f9e1b00b734.woff2") format("woff2"),
+		url("./fonts/Airbnb_Cereal-Cyrillic-Bold-82361954a2330f09187cfbccc2641ce9.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	unicode-range: U+0590-05FF, U+FB00-FB4F;
+	font-weight: normal;
+	font-style: normal;
+	src: url("./fonts/Airbnb_Cereal-Hebrew-Book-bfb9bf9044f18924e522d3e6076a47b3.woff2") format("woff2"),
+		url("./fonts/Airbnb_Cereal-Hebrew-Book-892a3f9af9d7160255f294e56b3462f3.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	unicode-range: U+0590-05FF, U+FB00-FB4F;
+	font-weight: 600;
+	font-style: normal;
+	src: url("./fonts/Airbnb_Cereal-Hebrew-Medium-a9d129489532402b6c34cd92039341ef.woff2") format("woff2"),
+		url("./fonts/Airbnb_Cereal-Hebrew-Medium-640ac52058359cd8dd430d9ad7d9c29e.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	unicode-range: U+0590-05FF, U+FB00-FB4F;
+	font-weight: 800;
+	font-style: normal;
+	src: url("./fonts/Airbnb_Cereal-Hebrew-Bold-f5ec4bf512fae9f82edd69290cef53ff.woff2") format("woff2"),
+		url("./fonts/Airbnb_Cereal-Hebrew-Bold-2825ca14347a2d0c257c0306165f448e.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	unicode-range: U+0600-06FF, U+0750-077F;
+	font-weight: normal;
+	font-style: normal;
+	src: url("./fonts/Airbnb_Cereal-Arabic-Book-a3069642fff439a4487060181f843c27.woff2") format("woff2"),
+		url("./fonts/Airbnb_Cereal-Arabic-Book-6de797f6b9ddbf3ce640d1318a77d85e.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	unicode-range: U+0600-06FF, U+0750-077F;
+	font-weight: 600;
+	font-style: normal;
+	src: url("./fonts/Airbnb_Cereal-Arabic-Medium-726e07fb1271351070ed63c892598211.woff2") format("woff2"),
+		url("./fonts/Airbnb_Cereal-Arabic-Medium-0ad3304a4ceb8b4ba992872376c6fee2.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	unicode-range: U+0600-06FF, U+0750-077F;
+	font-weight: 800;
+	font-style: normal;
+	src: url("./fonts/Airbnb_Cereal-Arabic-Bold-9129550a5028e0f85441bf1bbfacc1e4.woff2") format("woff2"),
+		url("./fonts/Airbnb_Cereal-Arabic-Bold-16ec9f0279388cccbedb6a1d95ac4d9d.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	unicode-range: U+F0000-FFFFD;
+	font-weight: normal;
+	src: url("./fonts/airmojix-Regular-368a4dfb2060306905d934709d7356f8.woff2") format("woff2"),
+		url("./fonts/airmojix-Regular-e0adf0d9735aee379296283c36fa3840.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	unicode-range: U+F0000-FFFFD;
+	font-weight: 600;
+	src: url("./fonts/airmojix-Regular-368a4dfb2060306905d934709d7356f8.woff2") format("woff2"),
+		url("./fonts/airmojix-Regular-e0adf0d9735aee379296283c36fa3840.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	unicode-range: U+F0000-FFFFD;
+	font-weight: 800;
+	src: url("./fonts/airmojix-Regular-368a4dfb2060306905d934709d7356f8.woff2") format("woff2"),
+		url("./fonts/airmojix-Regular-e0adf0d9735aee379296283c36fa3840.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	font-weight: normal;
+	font-style: normal;
+	src: url("./fonts/Airbnb_Cereal-Book-9a1c9cca9bb3d65fefa2aa487617805e.woff2") format("woff2"),
+		url("./fonts/Airbnb_Cereal-Book-aa38e86e3f98554f9f7053d7b713b4db.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	font-weight: 600;
+	font-style: normal;
+	src: url("./fonts/Airbnb_Cereal-Medium-50fc004b3082375f12ff0cfb67bf8e56.woff2") format("woff2"),
+		url("./fonts/Airbnb_Cereal-Medium-4bc8dafd2e0fd8914bf4d5edce9acd24.woff") format("woff");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: Circular;
+	font-weight: 800;
+	font-style: normal;
+	src: url("./fonts/Airbnb_Cereal-Bold-bdfb98485e7836ba31b456f65cded088.woff2") format("woff2"),
+		url("./fonts/Airbnb_Cereal-Bold-a188841af78481a25b7bb2316a5f5716.woff") format("woff");
+	font-display: swap;
+}
+
+/* html,
+body,
+:root {
+  height: 100%;
+} */
+
+body,
+html,
+#root,
+.app {
+	height: 100%;
+	width: 100%;
+}
+
+body {
+	font-family: Circular, Roboto, sans-serif;
+	line-height: 1.25rem;
+	font-size: 0.8125rem;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background: white;
+	overflow-y: auto;
+}
+
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+	html {
+		color-scheme: dark;
+	}
+}
+
+@layer base {
+	:root {
+		--background: 0 0% 100%;
+		--foreground: 0 0% 3.9%;
+		--card: 0 0% 100%;
+		--card-foreground: 0 0% 3.9%;
+		--popover: 0 0% 100%;
+		--popover-foreground: 0 0% 3.9%;
+		--primary: 0 0% 9%;
+		--primary-foreground: 0 0% 98%;
+		--secondary: 0 0% 96.1%;
+		--secondary-foreground: 0 0% 9%;
+		--muted: 0 0% 96.1%;
+		--muted-foreground: 0 0% 45.1%;
+		--accent: 0 0% 96.1%;
+		--accent-foreground: 0 0% 9%;
+		--destructive: 0 84.2% 60.2%;
+		--destructive-foreground: 0 0% 98%;
+		--border: 0 0% 89.8%;
+		--input: 0 0% 89.8%;
+		--ring: 0 0% 3.9%;
+		--chart-1: 12 76% 61%;
+		--chart-2: 173 58% 39%;
+		--chart-3: 197 37% 24%;
+		--chart-4: 43 74% 66%;
+		--chart-5: 27 87% 67%;
+		--radius: 0.5rem;
+	}
+	.dark {
+		--background: 0 0% 3.9%;
+		--foreground: 0 0% 98%;
+		--card: 0 0% 3.9%;
+		--card-foreground: 0 0% 98%;
+		--popover: 0 0% 3.9%;
+		--popover-foreground: 0 0% 98%;
+		--primary: 0 0% 98%;
+		--primary-foreground: 0 0% 9%;
+		--secondary: 0 0% 14.9%;
+		--secondary-foreground: 0 0% 98%;
+		--muted: 0 0% 14.9%;
+		--muted-foreground: 0 0% 63.9%;
+		--accent: 0 0% 14.9%;
+		--accent-foreground: 0 0% 98%;
+		--destructive: 0 62.8% 30.6%;
+		--destructive-foreground: 0 0% 98%;
+		--border: 0 0% 14.9%;
+		--input: 0 0% 14.9%;
+		--ring: 0 0% 83.1%;
+		--chart-1: 220 70% 50%;
+		--chart-2: 160 60% 45%;
+		--chart-3: 30 80% 55%;
+		--chart-4: 280 65% 60%;
+		--chart-5: 340 75% 55%;
+	}
+}
+
+@layer base {
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
+}
+
+.mark {
+	border: 2px solid red;
+}
+
+.mark-b {
+	border: 2px solid blue;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+.scroll::-webkit-scrollbar-button {
+	display: none;
+}
+
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 90px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+/* @import "tailwindcss"; */
+@layer utilities {
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+	.no-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+}
+
+.box-shadow {
+	box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px;
+}
+
+.animation_list {
+	animation-name: listAnimation;
+	animation-duration: 600ms;
+	animation-iteration-count: 1;
+	animation-fill-mode: both;
+	animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@keyframes listAnimation {
+	0% {
+		opacity: 0;
+		transform: translate(0, 40%);
+		opacity: 0;
+		transform: translate(0px, 40%);
+	}
+	100% {
+		opacity: 1;
+		transform: none;
+		opacity: 1;
+		transform: none;
+	}
+}
+
+/* Sonner Toast Styles */
+[data-close-button="true"] {
+	@apply bg-background border-border text-foreground hover:bg-muted;
+}
+
+video::-webkit-media-controls {
+	display: none !important;
+}
+
+.range-input::-webkit-slider-thumb {
+	height: 24px;
+	width: 24px;
+	border-radius: 50%;
+	background-color: #ffffff;
+	appearance: none;
+	pointer-events: auto;
+	cursor: pointer;
+	border: 2px solid #000000;
+}
+
+.range-input::-moz-range-thumb {
+	height: 24px;
+	width: 24px;
+	border-radius: 50%;
+	background-color: #ffffff;
+	pointer-events: auto;
+	cursor: pointer;
+	border: 2px solid #000000;
+}

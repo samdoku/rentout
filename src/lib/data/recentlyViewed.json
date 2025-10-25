@@ -1,0 +1,12 @@
+{
+	"id": "rv_004",
+	"userId": "user_123",
+	"viewedAt": "2025-07-22T12:45:00Z",
+	"listing": {
+		"id": "listing_999",
+		"title": "Luxury Villa by the Sea",
+		"location": "Malibu, California",
+		"pricePerNight": 450,
+		"mainImageUrl": "https://example.com/images/villa.jpg"
+	}
+}

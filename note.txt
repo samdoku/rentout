@@ -1,0 +1,179 @@
+Add a GIST index (faster geospatial queries)
+
+Create a migration with:
+
+-- prisma/migrations/xxxx_add_location_gist/steps.sql
+CREATE INDEX IF NOT EXISTS "Location_coordinates_gist"
+ON "Location"
+USING GIST ("coordinates");
+
+
+
+
+
+Find listings within 10 km of a point (nearest first)
+
+const lat = 5.603717;
+const lng = -0.186964;
+const radiusMeters = 10_000;
+
+const listings = await prisma.$queryRaw<
+  Array<{ id: string; distance_m: number }>
+>(Prisma.sql`
+  SELECT l."id",
+         ST_Distance(loc."coordinates",
+                     ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)::geography) AS distance_m
+  FROM "Listing" l
+  JOIN "Location" loc ON loc."id" = l."locationId"
+  WHERE ST_DWithin(
+    loc."coordinates",
+    ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)::geography,
+    ${radiusMeters}
+  )
+  ORDER BY distance_m ASC
+  LIMIT 50
+`);
+
+
+
+
+Reading and querying coordinates (useful extras)
+Get lat/lng back from a Location
+
+const rows = await prisma.$queryRaw<Array<{ lat: number; lng: number }>>(
+  Prisma.sql`
+    SELECT
+      ST_Y("coordinates"::geometry) AS lat,
+      ST_X("coordinates"::geometry) AS lng
+    FROM "Location"
+    WHERE "id" = ${locationId}
+  `
+);
+// rows[0]?.lat / rows[0]?.lng
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Received webhook with ID user_31vQSONWGiexD2YhuO5b1yi9u7V and event type of user.created
+Webhook payload: {
+  backup_code_enabled: false,
+  banned: false,
+  create_organization_enabled: true,
+  created_at: 1756402065350,
+  delete_self_enabled: true,
+  email_addresses: [
+    {
+      created_at: 1756402021957,
+      email_address: 'dokusamuel272@gmail.com',
+      id: 'idn_31vQMufIrjHYLy0W1s0nv5qs0nY',
+      linked_to: [Array],
+      matches_sso_connection: false,
+      object: 'email_address',
+      reserved: false,
+      updated_at: 1756402065404,
+      verification: [Object]
+    }
+  ],
+  enterprise_accounts: [],
+  external_accounts: [
+    {
+      approved_scopes: 'email https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid profile',
+      avatar_url: 'https://lh3.googleusercontent.com/a/ACg8ocLehO7hbbyCH0zley2Q-mM8CfD1ciGJmms937Dmi7utVO1kwQ=s1000-c',
+      created_at: 1756402021950,
+      email_address: 'dokusamuel272@gmail.com',
+      external_account_id: 'eac_31vQMwtKvWc7bX188Yh3XTktRVI',
+      family_name: 'doku',
+      first_name: 'samuel',
+      given_name: 'samuel',
+      google_id: '107470280800472014830',
+      id: 'idn_31vQMrp8SlTsoebturgVJOlDtF5',
+      identification_id: 'idn_31vQMrp8SlTsoebturgVJOlDtF5',
+      image_url: 'https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NMZWhPN2hiYnlDSDB6bGV5MlEtbU04Q2ZEMWNpR0ptbXM5MzdEbWk3dXRWTzFrd1E9czEwMDAtYyIsInMiOiJHZDFEY3IzcXMxbkFGWEpOVnd2QU81R0VDS250clFTYTl2TDBQNUNYY3ZjIn0',
+      label: null,
+      last_name: 'doku',
+      object: 'google_account',
+      picture: 'https://lh3.googleusercontent.com/a/ACg8ocLehO7hbbyCH0zley2Q-mM8CfD1ciGJmms937Dmi7utVO1kwQ=s1000-c',
+      provider: 'oauth_google',
+      provider_user_id: '107470280800472014830',
+      public_metadata: {},
+      updated_at: 1756402021950,
+      username: null,
+      verification: [Object]
+    }
+  ],
+  external_id: null,
+  first_name: 'samuel',
+  has_image: true,
+  id: 'user_31vQSONWGiexD2YhuO5b1yi9u7V',
+  image_url: 'https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18zMXZRU1VYdEpuaDI2N005T1FuZ2hTeWlKOVcifQ',
+  last_active_at: 1756402065350,
+  last_name: 'doku',
+  last_sign_in_at: null,
+  legal_accepted_at: null,
+  locked: false,
+  lockout_expires_in_seconds: null,
+  mfa_disabled_at: null,
+  mfa_enabled_at: null,
+  object: 'user',
+  passkeys: [],
+  password_enabled: false,
+  phone_numbers: [],
+  primary_email_address_id: 'idn_31vQMufIrjHYLy0W1s0nv5qs0nY',
+  primary_phone_number_id: null,
+  primary_web3_wallet_id: null,
+  private_metadata: {},
+  profile_image_url: 'https://images.clerk.dev/oauth_google/img_31vQSUXtJnh267M9OQnghSyiJ9W',
+  public_metadata: {},
+  saml_accounts: [],
+  totp_enabled: false,
+  two_factor_enabled: false,
+  unsafe_metadata: {},
+  updated_at: 1756402065499,
+  username: null,
+  verification_attempts_remaining: 100,
+  web3_wallets: []
+}
+
+
+
+
+
+
+
+
+
+sessionClaims {
+  azp: 'http://localhost:3000',
+  exp: 1756490383,
+  fva: [ 10, -1 ],
+  iat: 1756490323,
+  iss: 'https://internal-gibbon-54.clerk.accounts.dev',
+  jti: '6db0cb063f3bd6c06567',
+  metadata: { isHost: false },
+  nbf: 1756490313,
+  sid: 'sess_31yI1gwLL9Om8XNgbtvbGXHLOGE',
+  sts: 'active',
+  sub: 'user_31vQSONWGiexD2YhuO5b1yi9u7V',
+  v: 2
+}
+
+
+
+ngrok http --url=quagga-winning-roughly.ngrok-free.app 3000

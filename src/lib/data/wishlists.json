@@ -1,0 +1,101 @@
+{
+	"userId": "user_001",
+	"wishlists": [
+		{
+			"id": "wlst_beach001",
+			"name": "Beach Villas",
+			"createdAt": "2025-07-01T12:00:00Z",
+			"updatedAt": "2025-07-20T09:45:00Z",
+			"items": [
+				{
+					"id": "item_001",
+					"listingId": "listing_101",
+					"createdAt": "2025-07-10T14:30:00Z",
+					"listing": {
+						"id": "listing_101",
+						"title": "Oceanfront Villa with Infinity Pool",
+						"location": "Bali, Indonesia",
+						"pricePerNight": 450,
+						"thumbnailUrl": "https://example.com/images/listing101.jpg"
+					}
+				},
+				{
+					"id": "item_002",
+					"listingId": "listing_102",
+					"createdAt": "2025-07-11T16:00:00Z",
+					"listing": {
+						"id": "listing_102",
+						"title": "Private Beach Bungalow",
+						"location": "Maui, Hawaii",
+						"pricePerNight": 380,
+						"thumbnailUrl": "https://example.com/images/listing102.jpg"
+					}
+				}
+			]
+		},
+		{
+			"id": "wlst_city002",
+			"name": "City Apartments",
+			"createdAt": "2025-06-25T08:00:00Z",
+			"updatedAt": "2025-07-18T13:20:00Z",
+			"items": [
+				{
+					"id": "item_003",
+					"listingId": "listing_201",
+					"createdAt": "2025-07-05T10:45:00Z",
+					"listing": {
+						"id": "listing_201",
+						"title": "Modern Loft in Downtown LA",
+						"location": "Los Angeles, California",
+						"pricePerNight": 210,
+						"thumbnailUrl": "https://example.com/images/listing201.jpg"
+					}
+				},
+				{
+					"id": "item_004",
+					"listingId": "listing_202",
+					"createdAt": "2025-07-06T11:15:00Z",
+					"listing": {
+						"id": "listing_202",
+						"title": "Cozy Apartment near Eiffel Tower",
+						"location": "Paris, France",
+						"pricePerNight": 260,
+						"thumbnailUrl": "https://example.com/images/listing202.jpg"
+					}
+				},
+				{
+					"id": "item_005",
+					"listingId": "listing_203",
+					"createdAt": "2025-07-07T12:30:00Z",
+					"listing": {
+						"id": "listing_203",
+						"title": "Luxury Condo with City View",
+						"location": "Tokyo, Japan",
+						"pricePerNight": 320,
+						"thumbnailUrl": "https://example.com/images/listing203.jpg"
+					}
+				}
+			]
+		},
+		{
+			"id": "wlst_fam003",
+			"name": "Family Trips",
+			"createdAt": "2025-07-05T09:00:00Z",
+			"updatedAt": "2025-07-21T17:30:00Z",
+			"items": [
+				{
+					"id": "item_006",
+					"listingId": "listing_301",
+					"createdAt": "2025-07-15T18:45:00Z",
+					"listing": {
+						"id": "listing_301",
+						"title": "Spacious House with Backyard",
+						"location": "Orlando, Florida",
+						"pricePerNight": 180,
+						"thumbnailUrl": "https://example.com/images/listing301.jpg"
+					}
+				}
+			]
+		}
+	]
+}

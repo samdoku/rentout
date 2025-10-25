@@ -1,0 +1,68 @@
+"use client";
+
+import StepLayout from "../../_components/stepLayout";
+import { useStepNavigation } from "@/hooks/use-step-navigation";
+import { api } from "@/lib/axios-instance";
+import { usePathname, useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+const Page = () => {
+	const pathname = usePathname();
+	const navigations = useStepNavigation();
+	const router = useRouter();
+	const listingId = pathname.split("/")[2];
+
+	let disableAll: (v: boolean) => void = () => {};
+	let setButtonLoading: (b: "next" | "back" | "save" | null) => void = () => {};
+
+	const handleNext = async () => {
+		disableAll(true);
+		setButtonLoading("next");
+
+		try {
+			await api.patch(`/listings/${listingId}`, {
+				currentStep: navigations.next,
+			});
+
+			if (navigations.next) {
+				router.push(`/become-a-host/${listingId}/${navigations.next}`);
+			}
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (err: any) {
+			console.log(err);
+			toast.error("Oops, something went wrong");
+			setButtonLoading(null);
+			disableAll(false);
+		}
+	};
+
+	return (
+		<StepLayout
+			onNext={handleNext}
+			onMount={(setDisabled, setLoadingButton) => {
+				disableAll = setDisabled;
+				setButtonLoading = setLoadingButton;
+			}}
+			canProceed={true}
+		>
+			<div className=" px-4 max-w-6xl mx-auto w-full min-h-svh py-20 h-full flex items-center justify-center">
+				<div className="flex flex-col-reverse md:flex-row py-4">
+					<div className=" font-[550] text-sm md:text-base flex-1 flex flex-col justify-center items-start">
+						<h3>Step 1</h3>
+						<h1 className="md:text-4xl py-4 text-2xl">Tell us about your place</h1>
+						<p className="font-medium text-black/70">
+							In this step, we&apos;ll ask you which type of property you have and if guests will book the entire place or just a room. Then let us
+							know the location and how many guests can stay.
+						</p>
+					</div>
+					<div className=" flex-1">
+						<video className="w-full h-full" autoPlay muted playsInline loop={false} controls={false} src="/assets/videos/tellusaboutyourplace.mp4" />
+					</div>
+				</div>
+			</div>
+		</StepLayout>
+	);
+};
+
+export default Page;
+// { params }: { params: Promise<{ id: string }> }
