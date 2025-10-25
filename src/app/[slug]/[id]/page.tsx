@@ -197,7 +197,7 @@ const Page = () => {
 					<div className="w-[400px] h-fit shadow-[0_3px_15px_7px_rgba(0,0,0,0.15)] rounded-xl sticky top-[calc(80px_+_24px)] hidden md:block bg-white p-6">
 						<div className="flex items-baseline justify-between">
 							<div className="text-2xl font-semibold">
-								${listing.price}
+								₵{listing.price}
 								<span className="text-sm font-normal text-gray-500 ml-1">
 									/ {listing.pricingType?.toLowerCase()}
 								</span>
